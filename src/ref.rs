@@ -1,5 +1,6 @@
 use std::{
     fmt::{Debug, Display},
+    hash::Hash,
     marker::PhantomData,
 };
 
@@ -49,6 +50,12 @@ impl<T> Debug for Ref<T> {
 impl<T> Display for Ref<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Ref::<{}>({})", std::any::type_name::<T>(), self.idx)
+    }
+}
+
+impl<T> Hash for Ref<T> {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        state.write_u32(self.idx);
     }
 }
 
